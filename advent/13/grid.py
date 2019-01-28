@@ -23,10 +23,9 @@ class Grid:
             raise ValueError('No vehicles left')
 
         for vehicle in self._vehicles.copy():
-            if vehicle in self._removed_vehicles:
-                continue
-            self._move_vehicle(vehicle)
-            self._change_vehicle_direction(vehicle)
+            if vehicle not in self._removed_vehicles:
+                self._move_vehicle(vehicle)
+                self._change_vehicle_direction(vehicle)
 
         if self._err_on_single_vehicle and len(self._vehicles) == 1:
             last_vehicle = self._vehicles[0]
