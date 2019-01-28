@@ -17,12 +17,9 @@ class Grid:
         self._err_on_single_vehicle = True
 
     def step(self):
-        self._sort_vehicles_by_position()
-
         self._check_against_no_vehicles_left()
-
+        self._sort_vehicles_by_position()
         self._move_vehicles()
-
         self._report_single_vehicle()
 
     def _sort_vehicles_by_position(self):
