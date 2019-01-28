@@ -8,24 +8,26 @@ class Grid:
     def __init__(self):
         self._remove_colliding_vehicles = False
         self._err_on_single_vehicle = False
-
         self._width = None
         self._height = None
         self._rows = []
         self._vehicles = []
         self._vehicle_rows = []
         self._removed_vehicles = set()
-        for y, raw_line in enumerate(open('input.txt')):
-            line = raw_line.strip('\n')
-            self._read_row(line)
-            self._read_vehicles(line, y)
-        self._height = len(self._rows)
+        self._read_rows()
 
     def remove_colliding_vehicles(self):
         self._remove_colliding_vehicles = True
 
     def err_on_single_vehicle(self):
         self._err_on_single_vehicle = True
+
+    def _read_rows(self):
+        for y, raw_line in enumerate(open('input.txt')):
+            line = raw_line.strip('\n')
+            self._read_row(line)
+            self._read_vehicles(line, y)
+        self._height = len(self._rows)
 
     def _read_row(self, line):
         row = list(map(interpret_char, line))
@@ -47,7 +49,7 @@ class Grid:
 
     def step(self):
         self._vehicles.sort(key=cmp_to_key(compare_vehicle_positions))
-        print('')
+
         if len(self._vehicles) == 0:
             raise ValueError('No vehicles left')
 
@@ -56,7 +58,6 @@ class Grid:
                 continue
             self._move_vehicle(vehicle)
             self._change_vehicle_direction(vehicle)
-            print(vehicle.x, vehicle.y, vehicle.direction, vehicle)
 
         if self._err_on_single_vehicle and len(self._vehicles) == 1:
             last_vehicle = self._vehicles[0]
@@ -90,7 +91,6 @@ class Grid:
         return removed
 
     def _remove_vehicle(self, vehicle):
-        print('removing vehicle:', vehicle.x, vehicle.y, vehicle.direction, vehicle)
         self._vehicles.remove(vehicle)
         self._removed_vehicles.add(vehicle)
         self._vehicle_rows[vehicle.y][vehicle.x] = None
