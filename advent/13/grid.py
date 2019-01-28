@@ -17,16 +17,28 @@ class Grid:
         self._err_on_single_vehicle = True
 
     def step(self):
+        self._sort_vehicles_by_position()
+
+        self._check_against_no_vehicles_left()
+
+        self._move_vehicles()
+
+        self._report_single_vehicle()
+
+    def _sort_vehicles_by_position(self):
         self._vehicles.sort(key=cmp_to_key(compare_vehicle_positions))
 
+    def _check_against_no_vehicles_left(self):
         if len(self._vehicles) == 0:
             raise ValueError('No vehicles left')
 
+    def _move_vehicles(self):
         for vehicle in self._vehicles.copy():
             if vehicle not in self._removed_vehicles:
                 self._move_vehicle(vehicle)
                 self._change_vehicle_direction(vehicle)
 
+    def _report_single_vehicle(self):
         if self._err_on_single_vehicle and len(self._vehicles) == 1:
             last_vehicle = self._vehicles[0]
             raise ValueError('Single Vehicle at x:' + str(last_vehicle.x) + ', y: ' + str(last_vehicle.y))
