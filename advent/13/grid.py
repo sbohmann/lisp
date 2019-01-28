@@ -1,51 +1,20 @@
-from io import open
-from cell import Cell
-from vehicle import Vehicle
 from functools import cmp_to_key
 
 
 class Grid:
-    def __init__(self):
+    def __init__(self, rows, vehicles, vehicle_rows):
         self._remove_colliding_vehicles = False
         self._err_on_single_vehicle = False
-        self._width = None
-        self._height = None
-        self._rows = []
-        self._vehicles = []
-        self._vehicle_rows = []
+        self._rows = rows
+        self._vehicles = vehicles
+        self._vehicle_rows = vehicle_rows
         self._removed_vehicles = set()
-        self._read_rows()
 
     def remove_colliding_vehicles(self):
         self._remove_colliding_vehicles = True
 
     def err_on_single_vehicle(self):
         self._err_on_single_vehicle = True
-
-    def _read_rows(self):
-        for y, raw_line in enumerate(open('input.txt')):
-            line = raw_line.strip('\n')
-            self._read_row(line)
-            self._read_vehicles(line, y)
-        self._height = len(self._rows)
-
-    def _read_row(self, line):
-        row = list(map(interpret_char, line))
-        self._set_width(row)
-        self._rows.append(row)
-        self._vehicle_rows.append([None] * len(row))
-
-    def _set_width(self, row):
-        if self._width is None:
-            self._width = len(row)
-        elif len(row) != self._width:
-            raise ValueError('len(row): ' + str(len(row)) + ', self._width: ' + str(self._width))
-
-    def _read_vehicles(self, line, y):
-        for x, c in enumerate(line):
-            direction = vehicle_direction(c)
-            if direction is not None:
-                self._vehicles.append(Vehicle(x, y, direction))
 
     def step(self):
         self._vehicles.sort(key=cmp_to_key(compare_vehicle_positions))
@@ -94,36 +63,6 @@ class Grid:
         self._vehicles.remove(vehicle)
         self._removed_vehicles.add(vehicle)
         self._vehicle_rows[vehicle.y][vehicle.x] = None
-
-
-def interpret_char(c):
-    return grid_interpretation_table[c]
-
-
-grid_interpretation_table = {
-    ' ': Cell(),
-    '-': Cell().horizontal(),
-    '<': Cell().horizontal(),
-    '>': Cell().horizontal(),
-    '|': Cell().vertical(),
-    '^': Cell().vertical(),
-    'v': Cell().vertical(),
-    '+': Cell().horizontal().vertical(),
-    '/': Cell().slash(),
-    '\\': Cell().backslash()
-}
-
-
-def vehicle_direction(c):
-    return vehicle_creation_table.get(c, None)
-
-
-vehicle_creation_table = {
-    '^': 1,
-    '>': 2,
-    'v': 3,
-    '<': 4
-}
 
 
 def compare_vehicle_positions(a, b):
