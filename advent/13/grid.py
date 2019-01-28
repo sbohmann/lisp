@@ -3,12 +3,18 @@ from functools import cmp_to_key
 
 class Grid:
     def __init__(self, rail_map, vehicles, vehicle_map):
-        self._remove_colliding_vehicles = False
-        self._err_on_single_vehicle = False
+        self._initialize_configuration()
+        self._setup_state(rail_map, vehicle_map, vehicles)
+
+    def _setup_state(self, rail_map, vehicle_map, vehicles):
         self._rail_map = rail_map
         self._vehicles = vehicles
         self._vehicle_map = vehicle_map
         self._removed_vehicles = set()
+
+    def _initialize_configuration(self):
+        self._remove_colliding_vehicles = False
+        self._err_on_single_vehicle = False
 
     def remove_colliding_vehicles(self):
         self._remove_colliding_vehicles = True
