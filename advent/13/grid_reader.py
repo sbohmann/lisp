@@ -7,24 +7,24 @@ class GridReader:
     def __init__(self):
         self._width = None
         self._height = None
-        self._rows = []
+        self._rail_map = []
         self._vehicles = []
-        self._vehicle_rows = []
+        self._vehicle_map = []
         self._read_rows()
-        self._create_grid()
+        self._create_result()
 
     def _read_rows(self):
         for y, raw_line in enumerate(open('input.txt')):
             line = raw_line.strip('\n')
             self._read_row(line)
             self._read_vehicle_row(line, y)
-        self._height = len(self._rows)
+        self._height = len(self._rail_map)
 
     def _read_row(self, line):
         row = list(map(interpret_char, line))
         self._set_width(row)
-        self._rows.append(row)
-        self._vehicle_rows.append([None] * len(row))
+        self._rail_map.append(row)
+        self._vehicle_map.append([None] * len(row))
 
     def _set_width(self, row):
         if self._width is None:
@@ -38,11 +38,11 @@ class GridReader:
             if direction is not None:
                 self._vehicles.append(Vehicle(x, y, direction))
 
-    def _create_grid(self):
+    def _create_result(self):
         self.result = Grid(
-            self._rows,
+            self._rail_map,
             self._vehicles,
-            self._vehicle_rows)
+            self._vehicle_map)
 
 
 def interpret_char(c):
