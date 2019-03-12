@@ -11,7 +11,7 @@ class FloodSearch:
     def __init__(self, situation, starting_position):
         self._situation = situation
         self._positions = {starting_position}
-        self._distances = [[None] * situation.width] * situation.height
+        self._distances = [[None] * situation.width for index in range(situation.height)]
         self[starting_position] = 0
         self._calculate_distances()
 
@@ -20,7 +20,7 @@ class FloodSearch:
         self._situation.check_range(x, y)
         return self._distances[y][x]
 
-    def __setitem__(self, x, y, coordinates, new_distance):
+    def __setitem__(self, coordinates, new_distance):
         x, y = coordinates
         self._situation.check_range(x, y)
         self._distances[y][x] = new_distance
@@ -28,19 +28,19 @@ class FloodSearch:
     def _calculate_distances(self):
         while self._positions:
             workload = self._positions
-            self._positions = {}
+            self._positions = set()
             for position in workload:
                 self._calculate_distances_for_position(position)
 
     def _calculate_distances_for_position(self, position):
         for offset in _offsets:
             neighbor = _add(position, offset)
-            if self._situation.free(neighbor):
-                self._update_distance_and_add_position(neighbor)
+            if self._situation.free(*neighbor):
+                self._update_distance_and_add_position(neighbor, self[position] + 1)
 
-    def _update_distance_and_add_position(self, neighbor):
-        if self._update_distance(neighbor, self[neighbor] + 1):
-            self._distances.append(neighbor)
+    def _update_distance_and_add_position(self, neighbor, new_distance):
+        if self._update_distance(neighbor, new_distance):
+            self._positions.add(neighbor)
 
     def _update_distance(self, coordinates, new_distance):
         current_distance = self[coordinates]

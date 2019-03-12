@@ -7,12 +7,12 @@ class Map:
 
     def __getitem__(self, coordinates):
         x, y = coordinates
-        self._check_range(x, y)
+        self.check_range(x, y)
         return self._lines[y][x]
 
     def __setitem__(self, coordinates, value):
         x, y = coordinates
-        self._check_range(x, y)
+        self.check_range(x, y)
         self._check_value(value)
         self._lines[y][x] = value
 
@@ -38,7 +38,7 @@ class Map:
             if len(line) != self.width:
                 raise ValueError()
 
-    def _check_range(self, x, y):
+    def check_range(self, x, y):
         if not self.in_range(x, y):
             raise ValueError(
                 'x: ' + str(x) + ', y: ' + str(y) +
