@@ -11,9 +11,12 @@ class FloodSearch:
     def __init__(self, situation, starting_position):
         self._situation = situation
         self._positions = {starting_position}
-        self._distances = [[None] * situation.width for index in range(situation.height)]
+        self._distances = self._build_distances(situation)
         self[starting_position] = 0
         self._calculate_distances()
+
+    def _build_distances(self, situation):
+        return [[None] * situation.width for _ in range(situation.height)]
 
     def __getitem__(self, coordinates):
         x, y = coordinates
