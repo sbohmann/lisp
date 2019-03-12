@@ -1,5 +1,6 @@
 from map_from_file import MapFromFile
 
+
 class Solution:
     def __init__(self):
         self._map = MapFromFile('input.txt').result
