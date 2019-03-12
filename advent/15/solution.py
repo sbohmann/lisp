@@ -1,4 +1,5 @@
 from map_from_file import MapFromFile
+from flood_search import FloodSearch
 
 
 class Solution:
