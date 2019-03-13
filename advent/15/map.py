@@ -47,3 +47,10 @@ class Map:
     def _check_value(self, value):
         if value not in '#.EG':
             raise ValueError('Illegal value [' + str(value) + ']')
+
+    def count(self, function):
+        sum = 0
+        for y in range(0, self.height):
+            for x in range(0, self.height):
+                if function(x, y, self[x, y]):
+                    sum += 1
