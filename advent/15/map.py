@@ -17,15 +17,15 @@ class Map:
         self._lines[y][x] = value
 
     def free(self, x, y):
-        return self._is_value(x, y, '.')
+        return self.is_type(x, y, '.')
 
     def elf(self, x, y):
-        return self._is_value(x, y, 'E')
+        return self.is_type(x, y, 'E')
 
     def goblin(self, x, y):
-        return self._is_value(x, y, 'G')
+        return self.is_type(x, y, 'G')
 
-    def _is_value(self, x, y, value):
+    def is_type(self, x, y, value):
         return self.in_range(x, y) and self[x, y] == value
 
     def in_range(self, x, y):

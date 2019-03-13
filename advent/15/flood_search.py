@@ -1,12 +1,13 @@
-_offsets = [(0, -1), (-1, 0), (1, 0), (0, 1)]
+offsets = [(0, -1), (-1, 0), (1, 0), (0, 1)]
 
 
-def _add(position, offset):
+def add(position, offset):
     x, y = position
     dx, dy = offset
     return x + dx, y + dy
 
 
+# TODO add optional stop criterion function parameter and give access to number of last round if stopped
 class FloodSearch:
     def __init__(self, situation, starting_position):
         self._situation = situation
@@ -36,8 +37,8 @@ class FloodSearch:
                 self._calculate_distances_for_position(position)
 
     def _calculate_distances_for_position(self, position):
-        for offset in _offsets:
-            neighbor = _add(position, offset)
+        for offset in offsets:
+            neighbor = add(position, offset)
             if self._situation.free(*neighbor):
                 self._update_distance_and_add_position(neighbor, self[position] + 1)
 
