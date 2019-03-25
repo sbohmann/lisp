@@ -26,6 +26,8 @@ def wave(frequency, trigonometric_function):
 def _wave(frequency, trigonometric_function, index):
     if 0 <= index < Maximum:
         return trigonometric_function(frequency * index / SamplesPerSecond)
+    else:
+        return 0
 
 
 def sin(frequency):
