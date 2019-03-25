@@ -19,10 +19,22 @@ def zero(index):
     return 1.0 if index == 0 else 0.0
 
 
-def sin(index, frequency):
+def wave(frequency, trigonometric_function):
+    return lambda index: _wave(frequency, trigonometric_function, index)
+
+
+def _wave(frequency, trigonometric_function, index):
     if 0 <= index < Maximum:
-        return math.sin(frequency * index / SamplesPerSecond)
+        return trigonometric_function(frequency * index / SamplesPerSecond)
 
 
 def sin(frequency):
-    return lambda index: sin(index, frequency)
+    return wave(frequency, math.sin)
+
+
+def cos(frequency):
+    return wave(frequency, math.cos)
+
+
+def plus(f, g):
+    return lambda index: f(index) + g(index)
