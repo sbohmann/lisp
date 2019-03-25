@@ -1,6 +1,6 @@
 import math
 
-# a function takes an Int and yields up Maximum samples of type Double
+# a function takes an index of type Int and yields up Maximum samples of type Double
 Maximum = 1_000_000
 SamplesPerSecond = 100_000
 
